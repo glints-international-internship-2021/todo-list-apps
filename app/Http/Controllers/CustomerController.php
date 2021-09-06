@@ -11,33 +11,6 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CustomerController extends Controller
 {
-    // User Login
-    public function login(Request $request)
-    {
-        // retrieving data (email and password) from HTTP request
-        $credentials = $request->only('email', 'password');
-
-        try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                // if credentials not found, return error 400
-                $status = "failed";
-                $message = "login gagal, email dan password tidak cocok";
-
-                return response()->json(compact('status', 'message'), 400);
-            }
-        } catch (JWTException $e) {
-            // exception if attempting to verify token is not successful (internal server/unexpected error)
-            $status = "failed";
-            $message = "server tidak dapat memproses login dan membuat token";
-            return response()->json(compact('status', 'message'), 500);
-        }
-        // return token in JSON format
-        $status = "success";
-        $message = "login berhasil";
-        $data['token'] = $token;
-
-        return response()->json(compact('status', 'message', 'data'), 200);
-    }
 
     // User Registration
     public function register(Request $request)
@@ -52,10 +25,11 @@ class CustomerController extends Controller
         // if validation failed, return failed status and corresponded errors 
         if ($validator->fails()) {
 
+            $code = 400;
             $status = "failed";
             $message = "gagal dalam melakukan validasi email atau password";
             $error = $validator->errors();
-            return response()->json(compact('status', 'message', 'error'), 400);
+            return response()->json(compact('code', 'status', 'message', 'error'), 400);
         }
 
         // if validation success, store the data to database
@@ -67,38 +41,12 @@ class CustomerController extends Controller
 
         //get token for this new user based on their credentials
         $token = JWTAuth::fromUser($user);
-
+        $code = 201;
         $status = 'success';
         $message = 'proses registrasi berhasil';
         
         //return status, message, user info, and also token
-        return response()->json(compact( 'status', 'message', 'user','token',),201);
-    }
-
-    // User Info
-    public function getUserInfo()
-    {
-        try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                // decode token and get info of user, if not found then return this
-                return response()->json(['user_not_found'], 404);            
-                
-            }
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            //exception thrown if token is expired (check config in jwt file)
-            return response()->json(['token_expired'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            //exception thrown if token is invalid
-            return response()->json(['token_invalid'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-            //exception thrown if token is absent/not exist
-            return response()->json(['token_absent'], $e->getStatusCode());
-        
-        }
-        
-        //return detailed information of user in JSON
-        return response()->json(compact('user'));
+        return response()->json(compact('code', 'status', 'message', 'user','token'),201);
     }
 }
+
