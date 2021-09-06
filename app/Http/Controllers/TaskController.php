@@ -12,7 +12,6 @@ class TaskController extends Controller
     
     public function create(Request $request)
     {
-        // $input = $request->all();
         $validator = Validator::make($request->all(), [
             'title' => 'required',
         ]);
@@ -32,7 +31,6 @@ class TaskController extends Controller
         
         $status = "success";
         $message = "Data berhasil disimpan";
-        // $currentUser = JWTAuth::user()->get('id');
         
         return response()->json(compact('status', 'message'), 200);
     }
