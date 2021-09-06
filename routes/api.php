@@ -22,3 +22,4 @@ Route::post('/v1/user/login', [CustomerController::class, 'login']);
 
 Route::get('/user', [CustomerController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
 Route::post('/v1/todo/add', [TaskController::class, 'create'])->middleware('jwt.verify');
+// Auth::user()->id
