@@ -37,6 +37,6 @@ class TaskController extends Controller
         ]);
         $status = "success";
         $message = "Data berhasil disimpan";
-        return response()->json(compact('status', 'message'), 200);
+        return response()->json(compact('status', 'message'), 201);
     }
 }
