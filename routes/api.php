@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\CustomerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,8 +14,6 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-// Customer authentication
-Route::post('/v1/user/register', [CustomerController::class, 'register']);
-Route::post('/v1/user/login', [CustomerController::class, 'login']);
-
-Route::get('/user', [CustomerController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
