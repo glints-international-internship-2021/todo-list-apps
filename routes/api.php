@@ -16,7 +16,5 @@ use App\Http\Controllers\CustomerController;
 */
 
 // Customer authentication
-Route::post('/v1/user/register', [CustomerController::class, 'register']);
-Route::post('/v1/user/login', [CustomerController::class, 'login']);
-
-Route::get('/user', [CustomerController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
+Route::post('/v1/user/register', [CustomerController::class, 'register']); //register endpoint
+Route::post('/v1/user/login', [CustomerController::class, 'login']); //login endpoint
