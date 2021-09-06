@@ -17,8 +17,8 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->string('title');
-            $table->string('image');
-            $table->boolean('is_deleted');
+            $table->string('image')->nullable();
+            $table->boolean('is_deleted')->default(0);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
