@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
 
 class TaskController extends Controller
 {
@@ -15,6 +16,7 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
         ]);
+        $currentUser = JWTAuth::user()->id;
         if ($validator->fails()) {
 
             $status = "failed";
@@ -25,11 +27,13 @@ class TaskController extends Controller
         $task = Tasks::create([
             'title' => $request->get('title'),
             'image' => 'temp',
+            
         ]);
         
         $status = "success";
         $message = "Data berhasil disimpan";
-
+        // $currentUser = JWTAuth::user()->get('id');
+        
         return response()->json(compact('status', 'message'), 200);
     }
 }
