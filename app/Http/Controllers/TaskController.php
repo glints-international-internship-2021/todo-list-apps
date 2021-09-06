@@ -33,6 +33,7 @@ class TaskController extends Controller
         $task = Tasks::create([
             'title' => $request->get('title'),
             'image' => 'temp', 
+            'customer_id' => $currentUser,
         ]);
         $status = "success";
         $message = "Data berhasil disimpan";
