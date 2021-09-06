@@ -72,7 +72,7 @@ class CustomerController extends Controller
         $message = 'proses registrasi berhasil';
         
         //return status, message, user info, and also token
-        return response()->json(compact( 'status', 'message', 'user','token',),201);
+        return response()->json(compact( 'status', 'message', 'user','token'),201);
     }
 
     // User Info
