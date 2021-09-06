@@ -14,8 +14,8 @@ class UserController extends Controller
     public function authenticate(Request $request) {
         $data = $request->only('username', 'password');
         $validator = Validator::make($data, [
-            'username' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
+            'username' => ['required', 'string', 'min:1', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'max:20'],
         ]);
 
         if ($validator->fails()) {
@@ -40,13 +40,6 @@ class UserController extends Controller
             'status' => 'Success',
             'message' => 'Login success.',
             'token' => $token,
-        ]);
-    }
-
-    public function testMiddleware() {
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Test success.',
         ]);
     }
 }

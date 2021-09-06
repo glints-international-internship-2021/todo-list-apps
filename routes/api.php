@@ -22,5 +22,5 @@ use App\Http\Controllers\UserController;
 Route::post('v1/admin/login', [UserController::class, 'authenticate']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::get('v1/admin/test', [UserController::class, 'testMiddleware']);
+    // For endpoint that needs authentication
 });
