@@ -21,5 +21,5 @@ Route::post('/v1/user/register', [CustomerController::class, 'register']);
 Route::post('/v1/user/login', [CustomerController::class, 'login']);
 
 Route::get('/user', [CustomerController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
+// Create todo list
 Route::post('/v1/todo/add', [TaskController::class, 'create'])->middleware('jwt.verify');
-// Auth::user()->id
