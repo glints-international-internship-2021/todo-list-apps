@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +23,6 @@ public function login(Request $request)
             // if credentials not found, return error 400
             $status = "failed";
             $message = "login gagal, email dan password tidak cocok";
-
             return response()->json(compact('status', 'message'), 400);
         }
     } catch (JWTException $e) {
@@ -38,6 +38,7 @@ public function login(Request $request)
 
     return response()->json(compact('status', 'message', 'data'), 200);
 }
+  
     // User Registration
     public function register(Request $request)
     {
@@ -73,5 +74,30 @@ public function login(Request $request)
 
         //return status, message, user info, and also token
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
+    }
+
+    public function getListOfCustomers(Request $request){
+        $page = $request->page;
+        if ($page != null && $page != 0) {
+            $prev = ($page - 1) * 10;
+            $customers = DB::table('customers')->select('id', 'name')->skip($prev)->take(10)->get();
+            if (count($customers) == 0) {
+                return response()->json([
+                    'status' => 'Failed',
+                    'message' => 'Data not found.',
+                ], 400);
+            }
+            else {
+                $status = 'Success';
+                $message = 'Data successfully retrieved.';
+                return response()->json(compact('status', 'message', 'customers'), 200);
+            }
+        }
+        else {
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'Attribute "page" must be numeric and can\'t be null or zero.',
+            ], 400);
+        }
     }
 }
