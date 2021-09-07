@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +53,7 @@ class CustomerController extends Controller
             'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/',
         ]);
 
-        // if validation failed, return failed status and corresponded errors 
+        // if validation failed, return failed status and corresponded errors
         if ($validator->fails()) {
 
             $code = 400;
@@ -74,9 +75,32 @@ class CustomerController extends Controller
         $code = 201;
         $status = 'success';
         $message = 'registration process completed';
-        
         //return status, message, user info, and also token
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
     }
-}
 
+    public function getListOfCustomers(Request $request){
+        $page = $request->page;
+        if ($page != null && $page != 0) {
+            $prev = ($page - 1) * 10;
+            $customers = DB::table('customers')->select('id', 'name')->skip($prev)->take(10)->get();
+            if (count($customers) == 0) {
+                return response()->json([
+                    'status' => 'Failed',
+                    'message' => 'Data not found.',
+                ], 400);
+            }
+            else {
+                $status = 'Success';
+                $message = 'Data successfully retrieved.';
+                return response()->json(compact('status', 'message', 'customers'), 200);
+            }
+        }
+        else {
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'Attribute "page" must be numeric and can\'t be null or zero.',
+            ], 400);
+        }
+    }
+}
