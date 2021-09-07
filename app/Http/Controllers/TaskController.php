@@ -32,7 +32,7 @@ class TaskController extends Controller
         //if validation succeeds, return success message
         $task = Tasks::create([
             'title' => $request->get('title'),
-            'image' => 'temp', 
+            'image' => $request->get('image'), 
             'customer_id' => $currentUser,
         ]);
         $status = "success";
