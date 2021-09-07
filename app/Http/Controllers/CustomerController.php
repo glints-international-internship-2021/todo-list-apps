@@ -12,33 +12,43 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CustomerController extends Controller
 {
-// User Login
-public function login(Request $request)
-{
-    // retrieving data (email and password) from HTTP request
-    $credentials = $request->only('email', 'password');
-
-    try {
-        if (! $token = JWTAuth::attempt($credentials)) {
-            // if credentials not found, return error 400
-            $status = "failed";
-            $message = "login gagal, email dan password tidak cocok";
-            return response()->json(compact('status', 'message'), 400);
-        }
-    } catch (JWTException $e) {
-        // exception if attempting to verify token is not successful (internal server/unexpected error)
-        $status = "failed";
-        $message = "server tidak dapat memproses login dan membuat token";
-        return response()->json(compact('status', 'message'), 500);
+    function __construct()
+    {
+        //set [Customers] as the model that will be used for this class
+        \Config::set('auth.providers.users.model', \App\Models\Customers::class);
     }
-    // return token in JSON format
-    $status = "success";
-    $message = "login berhasil";
-    $data['token'] = $token;
 
-    return response()->json(compact('status', 'message', 'data'), 200);
-}
-  
+    // User Login
+    public function login(Request $request)
+    {
+        // retrieving data (email and password) from HTTP request
+        $credentials = $request->only('email', 'password');
+
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                // if credentials not found, return error 400
+                $code = 400;
+                $status = "failed";
+                $message = "login failed, email and password do not match";
+
+                return response()->json(compact('code', 'status', 'message'), 400);
+            }
+        } catch (JWTException $e) {
+            // exception if attempting to verify token is not successful (internal server/unexpected error)
+            $code = 500;
+            $status = "failed";
+            $message = "server could not process the request and create token";
+            return response()->json(compact('code', 'status', 'message'), 500);
+        }
+        // return token in JSON format
+        $code = 200;
+        $status = "success";
+        $message = "login success";
+        $data['token'] = $token;
+
+        return response()->json(compact('code', 'status', 'message', 'data'), 200);
+    }
+
     // User Registration
     public function register(Request $request)
     {
@@ -54,7 +64,7 @@ public function login(Request $request)
 
             $code = 400;
             $status = "failed";
-            $message = "gagal dalam melakukan validasi email atau password";
+            $message = "failed to validate the email or password";
             $error = $validator->errors();
             return response()->json(compact('code', 'status', 'message', 'error'), 400);
         }
@@ -70,8 +80,7 @@ public function login(Request $request)
         $token = JWTAuth::fromUser($user);
         $code = 201;
         $status = 'success';
-        $message = 'proses registrasi berhasil';
-
+        $message = 'registration process completed';
         //return status, message, user info, and also token
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
     }
