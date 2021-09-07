@@ -49,7 +49,7 @@ public function login(Request $request)
             'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/',
         ]);
 
-        // if validation failed, return failed status and corresponded errors 
+        // if validation failed, return failed status and corresponded errors
         if ($validator->fails()) {
 
             $code = 400;
@@ -71,7 +71,7 @@ public function login(Request $request)
         $code = 201;
         $status = 'success';
         $message = 'proses registrasi berhasil';
-        
+
         //return status, message, user info, and also token
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
     }
@@ -101,4 +101,3 @@ public function login(Request $request)
         }
     }
 }
-
