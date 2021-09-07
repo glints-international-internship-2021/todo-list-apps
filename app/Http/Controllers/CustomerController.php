@@ -23,7 +23,6 @@ public function login(Request $request)
             // if credentials not found, return error 400
             $status = "failed";
             $message = "login gagal, email dan password tidak cocok";
-
             return response()->json(compact('status', 'message'), 400);
         }
     } catch (JWTException $e) {
@@ -39,7 +38,7 @@ public function login(Request $request)
 
     return response()->json(compact('status', 'message', 'data'), 200);
 }
-
+  
     // User Registration
     public function register(Request $request)
     {
