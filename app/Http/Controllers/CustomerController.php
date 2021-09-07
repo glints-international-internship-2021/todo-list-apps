@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +12,6 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CustomerController extends Controller
 {
-
     // User Registration
     public function register(Request $request)
     {
@@ -47,6 +47,30 @@ class CustomerController extends Controller
         
         //return status, message, user info, and also token
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
+    }
+
+    public function getListOfCustomers($page){
+        if ($page != null && $page != 0) {
+            $prev = ($page - 1) * 10;
+            $customers = DB::table('customers')->select('id', 'name')->skip($prev)->take(10)->get();
+            if (count($customers) == 0) {
+                return response()->json([
+                    'status' => 'Failed',
+                    'message' => 'Data not found.',
+                ], 400);
+            }
+            else {
+                $status = 'Success';
+                $message = 'Data successfully retrieved.';
+                return response()->json(compact('status', 'message', 'customers'), 200);
+            }
+        }
+        else {
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'Attribute "page" must be numeric and can\'t be null or zero.',
+            ], 400);
+        }
     }
 }
 
