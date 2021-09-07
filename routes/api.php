@@ -26,6 +26,7 @@ Route::post('/v1/user/login', [CustomerController::class, 'login']);
 
 Route::post('v1/admin/login', [UserController::class, 'authenticate']);
 
+// Create todo
 Route::group(['middleware' => ['jwt.verify']], function() {
-    // For endpoint that needs authentication
+    Route::post('/v1/todo/add', [TaskController::class, 'create']);
 });
