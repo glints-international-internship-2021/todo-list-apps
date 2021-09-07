@@ -12,6 +12,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CustomerController extends Controller
 {
+    function __construct()
+    {
+        //set [Customers] as the model that will be used for this class
+        \Config::set('auth.providers.users.model', \App\Models\Customers::class);
+    }
+
     // User Login
     public function login(Request $request)
     {
