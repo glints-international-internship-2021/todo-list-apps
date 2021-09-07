@@ -12,6 +12,34 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CustomerController extends Controller
 {
+// User Login
+public function login(Request $request)
+{
+    // retrieving data (email and password) from HTTP request
+    $credentials = $request->only('email', 'password');
+
+    try {
+        if (! $token = JWTAuth::attempt($credentials)) {
+            // if credentials not found, return error 400
+            $status = "failed";
+            $message = "login gagal, email dan password tidak cocok";
+
+            return response()->json(compact('status', 'message'), 400);
+        }
+    } catch (JWTException $e) {
+        // exception if attempting to verify token is not successful (internal server/unexpected error)
+        $status = "failed";
+        $message = "server tidak dapat memproses login dan membuat token";
+        return response()->json(compact('status', 'message'), 500);
+    }
+    // return token in JSON format
+    $status = "success";
+    $message = "login berhasil";
+    $data['token'] = $token;
+
+    return response()->json(compact('status', 'message', 'data'), 200);
+}
+
     // User Registration
     public function register(Request $request)
     {
@@ -49,7 +77,8 @@ class CustomerController extends Controller
         return response()->json(compact('code', 'status', 'message', 'user','token'),201);
     }
 
-    public function getListOfCustomers($page){
+    public function getListOfCustomers(Request $request){
+        $page = $request->page;
         if ($page != null && $page != 0) {
             $prev = ($page - 1) * 10;
             $customers = DB::table('customers')->select('id', 'name')->skip($prev)->take(10)->get();

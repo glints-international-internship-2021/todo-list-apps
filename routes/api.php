@@ -28,5 +28,5 @@ Route::post('v1/admin/login', [UserController::class, 'authenticate']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     // For endpoints that needs authentication
-    Route::get('v1/admin/users/{page}', [CustomerController::class, 'getListOfCustomers']);
+    Route::get('v1/admin/users', [CustomerController::class, 'getListOfCustomers']);
 });
