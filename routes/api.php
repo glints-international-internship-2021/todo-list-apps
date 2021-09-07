@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 
 // Customer authentication
 Route::post('/v1/user/register', [CustomerController::class, 'register']);
+Route::post('/v1/user/login', [CustomerController::class, 'login']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
