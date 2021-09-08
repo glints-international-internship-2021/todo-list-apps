@@ -9,7 +9,11 @@ use JWTAuth;
 
 class TaskController extends Controller
 {
-    
+    function __construct()
+    {
+        //set [Customers] as the model that will be used for this class
+        \Config::set('auth.providers.users.model', \App\Models\Customers::class);
+    }
     public function create(Request $request)
     {
         // validating POST parameter, title required 
