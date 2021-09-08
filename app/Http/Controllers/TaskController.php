@@ -9,7 +9,11 @@ use JWTAuth;
 
 class TaskController extends Controller
 {
-    
+    function __construct()
+    {
+        //set [Customers] as the model that will be used for this class
+        \Config::set('auth.providers.users.model', \App\Models\Customers::class);
+    }
     public function create(Request $request)
     {
         // validating POST parameter, title required 
@@ -38,5 +42,16 @@ class TaskController extends Controller
         $status = "success";
         $message = "Data berhasil disimpan";
         return response()->json(compact('status', 'message'), 201);
+    }
+    public function view()
+    {
+        // geting the user id from token
+        $currentUser = JWTAuth::user()->id;
+        // Selecting the customer's tasks'id and title] where 'is_deleted' is false
+        $data = Tasks::where([['customer_id', $currentUser],['is_deleted', 0]])->select('id', 'title')->paginate()->items();
+        // Response Message
+        $status = "success";
+        $message = "Data berhasil disimpan";
+        return response()->json(compact('status', 'message','data'), 200);
     }
 }
