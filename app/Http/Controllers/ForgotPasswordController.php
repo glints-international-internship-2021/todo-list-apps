@@ -17,7 +17,7 @@ class ForgotPasswordController extends Controller
 {
     function __construct()
     {
-        //set [Customers] as the model/role that will be used for this class
+        // set [Customers] as the model/role that will be used for this class
         \Config::set('auth.providers.users.model', \App\Models\Customers::class);
     }
 
@@ -28,7 +28,7 @@ class ForgotPasswordController extends Controller
                             ->first();
 
         // If email does not exist
-        if (!$this->validateEmail($request->email)) {
+        if (!$userModel) {
             $code = 404;
             $status = "failed";
             $message = "Email does not exist in our database";
@@ -41,13 +41,6 @@ class ForgotPasswordController extends Controller
         $status = "success";
         $message = "We have sent the reset password link to your email";
         return response()->json(compact('code', 'status', 'message'), $code);            
-    
-    }
-
-    // To check whether customer is already registered or not based on their email
-    public function validateEmail($email) {
-        // If email exists return true, otherwise return false
-        return !!Customers::where('email', $email)->first();
     }
 
     public function sendVerification($id, $user, $email) {
@@ -57,7 +50,6 @@ class ForgotPasswordController extends Controller
     }
 
     public function generateToken($id, $email) {
-
         // Generating token using base64 encoding
         $rawToken = $email . $id . Str::random(128);
         $token = base64_encode($rawToken);
