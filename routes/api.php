@@ -6,7 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
-
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +29,8 @@ Route::post('/v1/user/forgot-password', [ForgotPasswordController::class, 'forgo
 
 Route::post('v1/admin/login', [UserController::class, 'authenticate']);
 
+// Create todo
 Route::group(['middleware' => ['jwt.verify']], function() {
-    // For endpoint that needs authentication
+    Route::post('/v1/todo/add', [TaskController::class, 'create']);
+    Route::get('v1/admin/users', [CustomerController::class, 'getListOfCustomers']);
 });
