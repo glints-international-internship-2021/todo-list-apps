@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 use JWTAuth;
 
 class TaskController extends Controller
@@ -42,5 +43,39 @@ class TaskController extends Controller
         $status = "success";
         $message = "Data berhasil disimpan";
         return response()->json(compact('status', 'message'), 201);
+    }
+    public function delete($id_todolist, Request $request)
+    {
+        $currentUser = JWTAuth::user()->id;
+        if (Tasks::where('id', $id_todolist)->exists()) {
+            $task = Tasks::find($id_todolist);
+            if ($task->is_deleted == 1){
+                $status = "failed";
+                $message = "Task sudah dihapus";
+                return response()->json(compact('status', 'message'), 404);
+            }
+            if($task->customer_id == $currentUser){
+                $sekarang = Carbon::now();
+                $task->deleted_at = $sekarang;
+                $task->is_deleted = 1;
+                $task->save();
+                
+                // Success Response
+                $status = "success";
+                $message = "Data berhasil dihapus";
+                return response()->json(compact('status', 'message'),201);
+                
+                // Customer does not own the task
+                } else{
+                    $status = "failed";
+                    $message = "Anda tidak memiliki task tersebut";
+                    return response()->json(compact('status', 'message'), 403);
+                }
+            // Task with that that id  does not exist
+          } else {
+              $status = "failed";
+              $message = "Data tidak ditemukan";
+              return response()->json(compact('status', 'message'), 404);
+          }
     }
 }

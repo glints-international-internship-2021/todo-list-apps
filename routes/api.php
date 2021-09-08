@@ -30,4 +30,5 @@ Route::post('v1/admin/login', [UserController::class, 'authenticate']);
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/v1/todo/add', [TaskController::class, 'create']);
     Route::get('v1/admin/users', [CustomerController::class, 'getListOfCustomers']);
+    Route::post('/v1/todo/delete/{id_todolist}', [TaskController::class, 'delete']);
 });
