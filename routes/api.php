@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ use App\Http\Controllers\UserController;
 // Customer authentication
 Route::post('/v1/user/register', [CustomerController::class, 'register']);
 Route::post('/v1/user/login', [CustomerController::class, 'login']);
+Route::post('/v1/user/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
