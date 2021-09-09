@@ -46,7 +46,6 @@ class TaskController extends Controller
     }
     public function view()
     {
-        // geting the user id from token
         $currentUser = JWTAuth::user()->id;
         // Validating whether $currentUser is null
         if (is_null($currentUser)){
@@ -64,6 +63,12 @@ class TaskController extends Controller
     public function delete($id_todolist, Request $request)
     {
         $currentUser = JWTAuth::user()->id;
+        // Validating whether $currentUser is null
+        if (is_null($currentUser)){
+            $status = "failed";
+            $message = "Customer tidak ditemukan";
+            return response()->json(compact('status', 'message'), 404);
+        }
         if (Tasks::where('id', $id_todolist)->exists()) {
             $task = Tasks::find($id_todolist);
             if ($task->is_deleted == 1){
