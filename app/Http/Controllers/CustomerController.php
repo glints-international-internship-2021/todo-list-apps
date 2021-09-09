@@ -109,4 +109,27 @@ class CustomerController extends Controller
             ], 400);
         }
     }
+
+    public function signout(Request $request) {
+        try {
+            // Signing out by invalidating current token used by customer in Authorization Header
+            JWTAuth::invalidate($request->bearerToken());
+
+            $code = 200;
+            $status = "success";
+            $message = "you have successfully signed out";
+
+            return response()->json(compact('code', 'status', 'message'), $code);
+
+        } catch (JWTException $e) {
+            // Exception if attempting to sign out is not successful (internal server/unexpected error)
+            $code = 500;
+            $status = "failed";
+            $message = "server could not process the logout request";
+
+            return response()->json(compact('code', 'status', 'message'), $code);
+        }
+        
+        
+    }
 }
