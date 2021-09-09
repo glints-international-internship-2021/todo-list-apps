@@ -27,7 +27,11 @@
 *Name that used in this repository for the model and database.
 
 ## Database
-Coming soon~
+### ERD
+![ERD](https://i.ibb.co/RSk0cjf/todolist-erd.png)
+
+### SQL File
+[Download Link](https://drive.google.com/file/d/1W9ckTPpCWHTkyTrHppIOcf7tDpNfyYQO/view?usp=sharing)
 
 ## Installation Requirements
 * **XAMPP** | [Download here](https://www.apachefriends.org/download.html)
@@ -47,6 +51,16 @@ Coming soon~
 5. Go to the folder that you are already cloned it before.
 6. Run this command.
 ```
+composer install
+```
+7. Make sure the `vendor` folder already exist.
+8. Make your own database in `http://localhost/phpmyadmin` named `todolist`. Import the SQL File above through the phpMyAdmin.
+
+![phpMyAdmin](https://i.ibb.co/xznbn8r/phpmyadmin.png)
+
+9. Copy the `.env.example` file and change it to `.env`.
+10. Open the CLI. Go to the project folder. Run this command.
+```
 php artisan serve
 ```
-7. You can check the detailed API routes in [here](https://github.com/glints-international-internship-2021/todo-list-apps/wiki). You can try those API routes with **Postman** ([link to download](https://www.postman.com/downloads/)).
+11. You can check the detailed API routes in [here](https://github.com/glints-international-internship-2021/todo-list-apps/wiki). You can try those API routes with **Postman** ([link to download](https://www.postman.com/downloads/)).
