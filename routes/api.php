@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,6 +23,8 @@ use App\Http\Controllers\TaskController;
 Route::post('/v1/user/register', [CustomerController::class, 'register']);
 Route::post('/v1/user/login', [CustomerController::class, 'login']);
 Route::post('/v1/user/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+
+Route::post('/v1/user/reset-password', [ResetPasswordController::class, 'resetPassword']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
