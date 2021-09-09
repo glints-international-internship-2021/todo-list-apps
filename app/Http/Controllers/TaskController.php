@@ -40,7 +40,7 @@ class TaskController extends Controller
             'customer_id' => $currentUser,
         ]);
         $status = "success";
-        $message = "Data berhasil di dapatkan";
+        $message = "Data berhasil disimpan";
         return response()->json(compact('status', 'message'), 201);
     }
     public function view()
@@ -51,7 +51,7 @@ class TaskController extends Controller
         $data = Tasks::where([['customer_id', $currentUser],['is_deleted', 0]])->select('id', 'title')->paginate()->items();
         // Response Message
         $status = "success";
-        $message = "Data berhasil disimpan";
+        $message = "Data berhasil didapatkan";
         return response()->json(compact('status', 'message','data'), 200);
     }
 }
