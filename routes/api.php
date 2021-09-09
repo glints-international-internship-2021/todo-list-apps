@@ -4,7 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\VerificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +22,8 @@ use App\Http\Controllers\TaskController;
 // Customer authentication
 Route::post('/v1/user/register', [CustomerController::class, 'register']);
 Route::post('/v1/user/login', [CustomerController::class, 'login']);
+Route::post('/v1/user/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('/v1/user/verification', [VerificationController::class, 'verifyToken']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
