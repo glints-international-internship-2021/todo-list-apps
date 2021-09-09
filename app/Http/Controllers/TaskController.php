@@ -40,7 +40,7 @@ class TaskController extends Controller
             'customer_id' => $currentUser,
         ]);
         $status = "success";
-        $message = "Data berhasil disimpan";
+        $message = "Data berhasil di dapatkan";
         return response()->json(compact('status', 'message'), 201);
     }
     public function view()
