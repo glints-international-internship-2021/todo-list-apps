@@ -43,4 +43,21 @@ class TaskController extends Controller
         $message = "Data berhasil disimpan";
         return response()->json(compact('status', 'message'), 201);
     }
+    public function view()
+    {
+        // geting the user id from token
+        $currentUser = JWTAuth::user()->id;
+        // Validating whether $currentUser is null
+        if (is_null($currentUser)){
+            $status = "failed";
+            $message = "Customer tidak ditemukan";
+            return response()->json(compact('status', 'message'), 404);
+        }
+        // Selecting the customer's tasks'id and title] where 'is_deleted' is false
+        $data = Tasks::where([['customer_id', $currentUser],['is_deleted', 0]])->select('id', 'title')->paginate()->items();
+        // Response Message
+        $status = "success";
+        $message = "Data berhasil didapatkan";
+        return response()->json(compact('status', 'message','data'), 200);
+    }
 }
