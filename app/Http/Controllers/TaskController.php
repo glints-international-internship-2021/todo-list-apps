@@ -100,4 +100,40 @@ class TaskController extends Controller
               return response()->json(compact('status', 'message'), 404);
           }
     }
+    public function edit($id_todolist, Request $request)
+    {
+        $currentUser = JWTAuth::user()->id;
+        if (Tasks::where('id', $id_todolist)->exists()) {
+            $task = Tasks::find($id_todolist);
+            // echo $task->customer_id
+            // echo 
+            if ($task->is_deleted == 1){
+                $status = "failed";
+                $message = "Task sudah dihapus";
+                return response()->json(compact('status', 'message'), 404);
+            }
+            if($task->customer_id == $currentUser){
+                $task->title = $request->title;
+                $sekarang = Carbon::now();
+                $task->updated_at = $sekarang;
+                $task->save();
+                
+                // Success Response
+                $status = "success";
+                $message = "Data berhasil diupdate";
+                return response()->json(compact('status', 'message'),201);
+                
+                // Customer does not own the task
+                } else{
+                    $status = "failed";
+                    $message = "Anda tidak memiliki task tersebut";
+                    return response()->json(compact('status', 'message'), 403);
+                }
+            // Task with that that id  does not exist
+          } else {
+              $status = "failed";
+              $message = "Data tidak ditemukan";
+              return response()->json(compact('status', 'message'), 404);
+          }
+    }
 }
