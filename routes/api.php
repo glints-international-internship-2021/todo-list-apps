@@ -36,4 +36,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/v1/todo/add', [TaskController::class, 'create']);
     Route::get('v1/admin/users', [CustomerController::class, 'getListOfCustomers']);
     Route::get('/v1/todo/list', [TaskController::class, 'view']);
+    Route::post('/v1/todo/delete/{id_todolist}', [TaskController::class, 'delete']);
 });
