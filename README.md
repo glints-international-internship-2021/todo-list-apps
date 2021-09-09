@@ -1,64 +1,66 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# To-do-list Application
+> An application that helps you make your own to-do-list with ease and comfortably. This application only provides API routes for mobile application or website.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> This application uses **Laravel v8.54**.
 
-## About Laravel
+## Features
+**User**
+* Register a new user account.
+* Login with user account.
+* Forgot password of the user account.
+* Sign out the user account.
+* User can create a to-do-list.
+* Add photo to the to-do-list.
+* Edit the to-do-list (include the photo).
+* Delete the to-do-list.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Admin**
+* Login with admin account.
+* Admin can see all registered users.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Roles
+| Name*         | Alias         | Description   |
+| ------------- | ------------- | ------------- |
+| Customer      | User          | This role can do the main tasks such as register, login, create, modify, and delete the to-do-list. |
+| User          | Admin         | This role can only do login with admin account and see all registered users. |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*Name that used in this repository for the model and database.
 
-## Learning Laravel
+## Database
+### ERD
+![ERD](https://i.ibb.co/RSk0cjf/todolist-erd.png)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### SQL File
+[Download Link](https://drive.google.com/file/d/1W9ckTPpCWHTkyTrHppIOcf7tDpNfyYQO/view?usp=sharing)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation Requirements
+* **XAMPP** | [Download here](https://www.apachefriends.org/download.html)
+* **Composer** | [Download here](https://getcomposer.org/download/)
 
-## Laravel Sponsors
+## Installation Process
+1. After you download and install all the requirements above. Open the XAMPP Control Panel and start the "Apache" and "MySQL".
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![XAMPP](https://i.ibb.co/gvCYjcd/xampp.png)
 
-### Premium Partners
+2. Check if the Composer it's installed or not through the CLI.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+![Composer](https://i.ibb.co/8g2BfKH/composer.png)
 
-## Contributing
+3. Clone this repository to inside the folder `C:\xampp\htdocs`.
+4. Open the CLI.
+5. Go to the folder that you are already cloned it before.
+6. Run this command.
+```
+composer install
+```
+7. Make sure the `vendor` folder already exist.
+8. Make your own database in `http://localhost/phpmyadmin` named `todolist`. Import the SQL File above through the phpMyAdmin.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![phpMyAdmin](https://i.ibb.co/xznbn8r/phpmyadmin.png)
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9. Copy the `.env.example` file and change it to `.env`.
+10. Open the CLI. Go to the project folder. Run this command.
+```
+php artisan serve
+```
+11. You can check the detailed API routes in [here](https://github.com/glints-international-internship-2021/todo-list-apps/wiki). You can try those API routes with **Postman** ([link to download](https://www.postman.com/downloads/)).
