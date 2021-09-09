@@ -103,6 +103,12 @@ class TaskController extends Controller
     public function edit($id_todolist, Request $request)
     {
         $currentUser = JWTAuth::user()->id;
+        // Validating whether $currentUser is null
+        if (is_null($currentUser)){
+            $status = "failed";
+            $message = "Customer tidak ditemukan";
+            return response()->json(compact('status', 'message'), 404);
+        }
         if (Tasks::where('id', $id_todolist)->exists()) {
             $task = Tasks::find($id_todolist);
             // echo $task->customer_id
