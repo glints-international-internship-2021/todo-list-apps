@@ -61,6 +61,14 @@ composer install
 9. Copy the `.env.example` file and change it to `.env`.
 10. Open the CLI. Go to the project folder. Run this command.
 ```
+php artisan db:seed
+```
+11. You will see a new admin account in your database. This is the credentials of that account.
+| Username      | Password      |
+| ------------- | ------------- |
+| admin         | 1234dmin      |
+12. Run this command.
+```
 php artisan serve
 ```
-11. You can check the detailed API routes in [here](https://github.com/glints-international-internship-2021/todo-list-apps/wiki). You can try those API routes with **Postman** ([link to download](https://www.postman.com/downloads/)).
+13. You can check the detailed API routes in [here](https://github.com/glints-international-internship-2021/todo-list-apps/wiki). You can try those API routes with **Postman** ([link to download](https://www.postman.com/downloads/)).
