@@ -90,17 +90,9 @@ class CustomerController extends Controller
         if ($page != null && $page != 0) {
             $prev = ($page - 1) * 10;
             $customers = DB::table('customers')->select('id', 'name')->skip($prev)->take(10)->get();
-            if (count($customers) == 0) {
-                return response()->json([
-                    'status' => 'Failed',
-                    'message' => 'Data not found.',
-                ], 400);
-            }
-            else {
-                $status = 'Success';
-                $message = 'Data successfully retrieved.';
-                return response()->json(compact('status', 'message', 'customers'), 200);
-            }
+            $status = 'Success';
+            $message = 'Data successfully retrieved.';
+            return response()->json(compact('status', 'message', 'customers'), 200);
         }
         else {
             return response()->json([
