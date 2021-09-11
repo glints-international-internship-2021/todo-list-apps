@@ -127,18 +127,18 @@ class TaskController extends Controller
                 $message = "Task sudah dihapus";
                 return response()->json(compact('status', 'message'), 404);
             }
-            // Updating image when $request->image not null 
-            $img_path = $task->image;
-            if($request->image != null){
-                $img_response = $this->img_save($request);
-                // echo $img_response->getData()->status;
-                if($img_response->getData()->status =="failed")
-                {
-                    return $img_response;
-                }
-                $img_path = $img_response->getData()->path;
-            }
             if($task->customer_id == $currentUser){
+                // Updating image when $request->image not null 
+                $img_path = $task->image;
+                if($request->image != null){
+                    $img_response = $this->img_save($request);
+                    // echo $img_response->getData()->status;
+                    if($img_response->getData()->status =="failed")
+                    {
+                        return $img_response;
+                    }
+                    $img_path = $img_response->getData()->path;
+                }
                 $task->title = $request->title;
                 $sekarang = Carbon::now();
                 $task->image = $img_path;
