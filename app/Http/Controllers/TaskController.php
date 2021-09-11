@@ -19,7 +19,7 @@ class TaskController extends Controller
     {  
         // If image is not input, return to previous function
         $validator = Validator::make($request->all(), [
-            'image' => 'image|mimes:png,jpeg,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:png,jpeg,jpg,gif,svg',
         ]);
         // if validation failed, return failed status and corresponded errors
         if ($validator->fails()) {
@@ -138,16 +138,29 @@ class TaskController extends Controller
         if (Tasks::where('id', $id_todolist)->exists()) {
             $task = Tasks::find($id_todolist);
             // echo $task->customer_id
-            // echo 
+            
             if ($task->is_deleted == 1){
                 $status = "failed";
                 $message = "Task sudah dihapus";
                 return response()->json(compact('status', 'message'), 404);
             }
+            // Updating image when $request->image not null 
+            $img_path = $task->image;
+            if($request->image != null){
+                $img_response = $this->img_save($request);
+                // echo $img_response->getData()->status;
+                if($img_response->getData()->status =="failed")
+                {
+                    return $img_response;
+                }
+                $img_path = $img_response->getData()->path;
+            }
             if($task->customer_id == $currentUser){
                 $task->title = $request->title;
                 $sekarang = Carbon::now();
+                $task->image = $img_path;
                 $task->updated_at = $sekarang;
+                
                 $task->save();
                 
                 // Success Response
