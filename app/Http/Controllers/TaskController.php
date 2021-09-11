@@ -15,16 +15,30 @@ class TaskController extends Controller
         //set [Customers] as the model that will be used for this class
         \Config::set('auth.providers.users.model', \App\Models\Customers::class);
     }
+    public function img_save(Request $request)
+    {  
+        // If image is not input, return to previous function
+        $validator = Validator::make($request->all(), [
+            'image' => 'image|mimes:png,jpeg,jpg,gif,svg|max:2048',
+        ]);
+        // if validation failed, return failed status and corresponded errors
+        if ($validator->fails()) {
+            $status = "failed";
+            $message = "failed to upload image";
+            $error = $validator->errors();
+            return response()->json(compact('status', 'message', 'error'));
+        }
+        $path = $request->file('image')->store('public/images');
+        $status = "success";
+        $message = "Image Uploaded";
+        return response()->json(compact('status', 'path'),201);
+    }
     public function create(Request $request)
     {
         // validating POST parameter, title required
         $validator = Validator::make($request->all(), [
             'title' => 'required',
         ]);
-
-        //storing token ID
-        $currentUser = JWTAuth::user()->id;
-
         //if validation fails, return failed message
         if ($validator->fails()) {
 
@@ -33,11 +47,23 @@ class TaskController extends Controller
             $error = $validator->errors();
             return response()->json(compact('status', 'message', 'error'), 400);
         }
-
-        //if validation succeeds, return success message
+        // saving image: declaring image path as null and change it to its path when image exists
+        $img_path = null;
+        if($request->image != null){
+            $img_response = $this->img_save($request);
+            // echo $img_response->getData()->status;
+            if($img_response->getData()->status =="failed")
+            {
+                return $img_response;
+            }
+            $img_path = $img_response->getData()->path;
+        }
+        //storing token ID
+        $currentUser = JWTAuth::user()->id;
+        //Saving input and give success response
         $task = Tasks::create([
             'title' => $request->get('title'),
-            'image' => $request->get('image'),
+            'image' => $img_path,
             'customer_id' => $currentUser,
         ]);
         $status = "success";
@@ -142,4 +168,5 @@ class TaskController extends Controller
               return response()->json(compact('status', 'message'), 404);
           }
     }
+    
 }
