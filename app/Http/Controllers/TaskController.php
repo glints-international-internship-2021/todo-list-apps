@@ -15,24 +15,7 @@ class TaskController extends Controller
         //set [Customers] as the model that will be used for this class
         \Config::set('auth.providers.users.model', \App\Models\Customers::class);
     }
-    public function img_save(Request $request)
-    {  
-        // If image is not input, return to previous function
-        $validator = Validator::make($request->all(), [
-            'image' => 'image|mimes:png,jpeg,jpg,gif,svg',
-        ]);
-        // if validation failed, return failed status and corresponded errors
-        if ($validator->fails()) {
-            $status = "failed";
-            $message = "failed to upload image";
-            $error = $validator->errors();
-            return response()->json(compact('status', 'message', 'error'));
-        }
-        $path = $request->file('image')->store('public/images');
-        $status = "success";
-        $message = "Image Uploaded";
-        return response()->json(compact('status', 'path'),201);
-    }
+    
     public function create(Request $request)
     {
         // validating POST parameter, title required
@@ -181,5 +164,22 @@ class TaskController extends Controller
               return response()->json(compact('status', 'message'), 404);
           }
     }
-    
+    public function img_save(Request $request)
+    {  
+        // If image is not input, return to previous function
+        $validator = Validator::make($request->all(), [
+            'image' => 'image|mimes:png,jpeg,jpg,gif,svg',
+        ]);
+        // if validation failed, return failed status and corresponded errors
+        if ($validator->fails()) {
+            $status = "failed";
+            $message = "failed to upload image";
+            $error = $validator->errors();
+            return response()->json(compact('status', 'message', 'error'),400);
+        }
+        $path = $request->file('image')->store('public/images');
+        $status = "success";
+        $message = "Image Uploaded";
+        return response()->json(compact('status', 'path'),201);
+    }
 }
